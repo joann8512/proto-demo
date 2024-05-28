@@ -10,7 +10,16 @@ function Home() {
   return (
     <section>
         <Particle />
-        <MidiPlayer />
+        <h1 className="project-heading">
+          Hi There!{" "}
+          <span className="wave" role="img" aria-labelledby="wave">
+            👋🏻
+          </span>
+        </h1>
+        <Type />
+        <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
+          
+        </Row>
       <Home2 />
     </section>
   );

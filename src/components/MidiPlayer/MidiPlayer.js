@@ -2,12 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as Tone from "tone";
 import SampleLibrary from '../Libs/Tonejs-Instruments';
-//import { Sleep } from 'utils/timer';
-//import { triggerKey } from 'features/keyboard/action';
+import { Sleep } from '../utils/Timer';
+import { triggerKey } from '../Keyboard/Action';
 import './style.scss';
 import Midi from '../data';
-//import 'utils/extension';
-//import { NOTE_PREVIEW_TIME } from 'config/settings';
+import '../utils/Extension';
 import { EventSystem } from '../utils/EventSystem';
 import { pause, resume, stop, changeSpeed } from './Action';
 
@@ -50,7 +49,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
 
   pianoSynths: any[] = [];
 
-  //frameId: Number;
+  frameId: Number;
   lastPlayState: String = PLAYSTATE.STOP;
 
   get playState() {
@@ -61,9 +60,9 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
     return this.props.midi.duration;
   }
 
-  /*get timeOffset() {
-  *  return NOTE_PREVIEW_TIME;
-  }*/
+  get timeOffset() {
+    return NOTE_PREVIEW_TIME;
+  }
   
   get currentNotes(): MidiNote[] {
     let notes = [];
@@ -152,7 +151,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
           count++;
           console.log("midiplayer: load piano finish");
         }
-      }).toMaster();
+      }).toDestination(); //toMaster
       this.pianoSynths.push(synth);
     }
 
@@ -238,7 +237,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
 
 					/*Tone.Draw.schedule(() => {
           *  this.props.dispatch(triggerKey(note.name, note.duration));
-          *}, time);*/
+          }, time);*/
 				}, note.time + this.timeOffset);
       });
     });

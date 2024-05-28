@@ -9,25 +9,38 @@
     width: 50px;
     height: 25px;
     margin: 0 4px;
-    border: 1px solid grey;
+    border: 1px solid #a754eba9;
     border-radius: 4px;
-    color: black;
+    line-height: 0px;
+    color: white;
+    background-color: #a754eba9;
     font-size: 14px;
+    vertical-align: middle;
+    text-align: center;
   
     &:disabled {
-      color: rgb(150, 150, 150);
-      border-color: rgb(180, 180, 180);
+      color: rgb(160, 160, 160);
+      background-color: rgb(110, 110, 110);
+      border-color: rgb(110, 110, 110);
     }
+  }
+
+  button:hover {
+    border: 2px solid #7807b9c2;
+    background-color: #a322eec2 !important;
+    border-color: #a322eec2 !important;
   }
   
   .progress-text {
     height: 25px;
     margin: 0 4px;
     font-size: 14px;
+    color: white;
   }
   
   .tempo-container {
     margin: 10px;
+    color: white;
   }
   
   $thumb-color: #0199ff;

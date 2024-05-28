@@ -11,7 +11,7 @@ export const FILE_FORMATS = {
   musicXml: 'MusicXML',
   midi: 'Midi'
 };
-export const FILE_EXTENSIONS = ['.mxl', '.musicxml', '.mid'];
+export const FILE_EXTENSIONS = ['.mxl', '.musicxml', '.mid', '.midi'];
 
 type MusicInputProps = {
   dispatch: (a: *) => *
@@ -86,7 +86,7 @@ class MusicInput extends React.Component<MusicInputProps, MusicInputState> {
     });
 
     this.midi = new Midi();
-    if (fileName.endsWith(".mid")) {
+    if (fileName.endsWith(".mid") || fileName.endsWith(".midi")) {
       this.midi.loadMidi(fileContent).then(this.onLoadMidi);
       this.props.dispatch(changeMusicXml(null));
     } else {

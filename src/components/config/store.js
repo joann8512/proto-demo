@@ -4,7 +4,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import {thunk} from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
-//import keyboardReducer from 'features/keyboard/reducer';
+import keyboardReducer from '../Keyboard/Reducer';
 import musicInputReducer from '../MusicInput/Reducer';
 import playerReducer from '../MidiPlayer/Reducer';
 
