@@ -1,7 +1,7 @@
 # proto-demo
 
 ## Setup
-To build this project, the following will be used:
+To build this project, the following will be used:  
     - React.js  
     - Node.js  
     - Express.js  
