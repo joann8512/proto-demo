@@ -1,0 +1,45 @@
+.url-form {
+  width: 40%;
+  height: 40px;
+  padding-left: 10%;
+  position: relative;
+  display: flex;
+}
+
+.url-type-select {
+  height: 40px;
+  margin: 0 10px 0 10px;
+}
+
+.url-input {
+  border: 1px solid rgb(128, 128, 128);
+  height: 40px;
+  padding: 0 10px 0 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  flex-grow: 2;
+  text-align: left;
+}
+
+.dropzone {
+  width: 60%;
+  height: 100px;
+  margin-left: 10%;
+  margin-top: 10px;
+  display: 'flex';
+  align-items: 'center';
+  padding: 40px;
+  border-radius: 2px;
+  border: 2px dotted rgba(200, 137, 230, 0.637);
+  background: rgba(201, 137, 230, 0.445);
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.midi-json-area {
+  display: block;
+  margin: 0px auto; 
+  width: 70%;
+  height: 250px;
+}

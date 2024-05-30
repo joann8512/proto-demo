@@ -1,0 +1,88 @@
+.control-btn-container {
+  display: flex;
+  justify-content: right;
+  padding-right: 25%;
+  margin: 10px;
+}
+
+button {
+  width: 50px;
+  height: 25px;
+  margin: 0 4px;
+  border: 1px solid rgba(119, 0, 119, 0.76);
+  border-radius: 4px;
+  color: white;
+  background-color: rgba(165, 3, 165, 0.705);
+  font-size: 14px;
+
+  &:disabled {
+    color: rgb(150, 150, 150);
+    border-color: rgb(180, 180, 180);
+    background-color: rgb(180, 180, 180);
+  }
+}
+
+button:hover {
+  border: 2px solid #7807b9c2;
+  background-color: #a322eec2 !important;
+  border-color: #a322eec2 !important;
+}
+
+.progress-text {
+  height: 25px;
+  margin: 0 4px;
+  font-size: 18px;
+  color: white;
+}
+
+.tempo-container {
+  margin: 10px;
+  color: white;
+}
+
+$thumb-color: #0199ff;
+$thumb-hover-color: #55c2ff;
+$thumb-size: 20px;
+$thumb-margin-top: -2px;
+
+.slider-control {
+  display: block;
+  margin: 10px auto;
+  appearance: none;
+  width: 80%;
+  height: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:focus, &:hover {
+    outline: none;
+    border: none;
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    height: $thumb-size;
+    width: $thumb-size;
+    margin-top: $thumb-margin-top;
+    border-radius: 100%;  
+    background-color: $thumb-color; 
+
+    &:focus, &:hover {
+      background-color: $thumb-hover-color;
+    }
+  }
+
+  &::-moz-range-thumb {
+    appearance: none;
+    height: $thumb-size;
+    width: $thumb-size;
+    margin-top: $thumb-margin-top;
+    border-radius: 100%;  
+    background-color: $thumb-color; 
+    border: none;
+
+    &:focus, &:hover {
+      background-color: $thumb-hover-color;
+    }
+  }
+}

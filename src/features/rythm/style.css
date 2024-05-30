@@ -1,0 +1,7 @@
+.rythmboard {
+  width: 80%; 
+  height: 200px;
+  margin: 10px auto 0; 
+	border: 5px solid rgba(204, 89, 204, 0.603);
+  background-color: lavenderblush;
+}
