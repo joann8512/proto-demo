@@ -1,20 +1,19 @@
-This is a tiny project that aims to help myself learn piano. It provides a virtual piano, automatic play of midi and musicxml files, preview of next notes, and display of music sheet.
+# proto-demo
 
-[Youtube link](https://youtu.be/wtuBd7RBzT4).
+## Setup
+To build this project, the following will be used:  
+    - React.js  
+    - Node.js  
+    - Express.js  
+    - CSS3  
+    - Vercel  
 
-### How to Run
+## To Start
+You will need `node.js` and `git` installed globally on your machine.
+    1. Installation: npm install  
+    2. In the project directory, you can run: `npm start`  
+    [link](https://nodejs.org/en/download/package-manager/)
 
-This project is bootstrapped with Create React App, so run
-
-`npm start`
-
-or
-
-`yarn start`
-
-in the project folder to run it. 
-
-### Know Something More
-
-[This article](https://imagicbell.github.io/front-end/2019/06/15/piano-app.html) gives detailed illustration on how I made this project.
+Runs the app in the development mode.  
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will reload if you make edits.
 
