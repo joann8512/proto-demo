@@ -34,7 +34,7 @@ function App() {
   useEffect(() => {
     const getMidi = async () => {
       const API_URL = "http://localhost:8000";
-      const { data } = await axios.get(`${API_URL}/demo`);
+      const { data } = await axios.get(`${API_URL}`);
       setMidi(data);
     };
     getMidi();
@@ -45,7 +45,7 @@ function App() {
       <PlayerUpdateFunctionContext.Provider value={setMidi}>
       <Preloader load={load} />
         <div className="App" id={load ? "no-scroll" : "scroll"}>
-          <EventSystemProvider>
+          {/*<EventSystemProvider>*/}
             <Navbar />
             <ScrollToTop />
             <Routes>
@@ -53,7 +53,7 @@ function App() {
             </Routes>
             {/*<Home />*/}
             <Footer />
-          </EventSystemProvider>
+          {/*</EventSystemProvider>*/}
         </div>
       </PlayerUpdateFunctionContext.Provider>
     </Router>

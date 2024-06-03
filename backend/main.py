@@ -1,6 +1,7 @@
 import uvicorn
+import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 import fastapi.security as Security
 from fastapi import HTTPException
 
@@ -26,7 +27,11 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-@app.get("/demo")
+UPLOAD_DIR = './uploaded_files'
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+
+@app.get("/")
 def read_files():
     db = DBSession()
     try:
@@ -35,7 +40,7 @@ def read_files():
         db.close()
     return notes
 
-@app.post("/demo")
+@app.post("/")
 ## Adding new midi input to database
 def add_note(midi: MidiInput):
     db = DBSession()
@@ -47,7 +52,7 @@ def add_note(midi: MidiInput):
                     "msg": "Both 'title' and 'midi_body' are empty. These are optional attributes but at least one must be provided."
                 })
         new_file = models.Midi(
-            title=midi.title, note_body=midi.midi_body
+            title=midi.title, midi_body=midi.midi_body
         )
         db.add(new_file)
         db.commit()
@@ -56,7 +61,14 @@ def add_note(midi: MidiInput):
         db.close()
     return new_file
 
-@app.put("/demo")
+@app.post("/uploadfile/")
+async def create_upload_file(file: UploadFile = File(...)):
+    file_location = os.path.join(UPLOAD_DIR, file.filename)
+    with open(file_location, "wb") as buffer:
+        buffer.write(await file.read())
+    return {"info": f"file '{file.filename}' saved at '{file_location}'"}
+
+@app.put("/")
 def update_midi(midi_id: int, updated_midi: MidiInput):
     if len(updated_midi.title) == 0 and len(updated_midi.midi_body) == 0:
         raise HTTPException(status_code=400, detail={
@@ -74,7 +86,7 @@ def update_midi(midi_id: int, updated_midi: MidiInput):
         db.close()
     return midi
 
-@app.delete("/demo")
+@app.delete("/")
 def delete_midi(midi_id: int):
     db = DBSession()
     try:
