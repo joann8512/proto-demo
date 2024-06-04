@@ -1,2 +1,4 @@
 #!/bin/sh
-python3 "../../ai_melception/init/gen_sample_preload.py"
+cd "../../ai_melception/init"
+python3 "gen_sample_preload.py"
+cd "../../proto-demo/backend"
