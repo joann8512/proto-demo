@@ -10,6 +10,7 @@ class Midi(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     midi_body = Column(JSON)
+    init = Column(String)
 
     def __repr__(self):
-        return f'Midi(id={self.id}, title={self.title}, midi_body={self.midi_body})'
+        return f'Midi(id={self.id}, title={self.title}, midi_body={self.midi_body}), init={self.init}'

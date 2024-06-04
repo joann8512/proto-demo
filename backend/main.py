@@ -1,5 +1,7 @@
 import uvicorn
 import os
+import subprocess
+import logging
 
 from fastapi import FastAPI, File, UploadFile
 import fastapi.security as Security
@@ -66,9 +68,20 @@ async def create_upload_file(file: UploadFile = File(...)):
     file_location = os.path.join(UPLOAD_DIR, file.filename)
     with open(file_location, "wb") as buffer:
         buffer.write(await file.read())
-    return {"info": f"file '{file.filename}' saved at '{file_location}'"}
+    subprocess.call(['bash','./start.sh'])  # file_location
 
-@app.put("/")
+    db = DBSession()
+    try:
+        midi = db.query(models.Midi).filter(models.Midi.title == file.filename).first()
+        fn, ext = os.path.splitext(file.filename)
+        midi.init = os.path.join(fn+'_init', ext)
+        db.commit()
+        db.refresh(midi)
+    finally:
+        db.close()
+    return midi.init
+
+@app.put("/update/")
 def update_midi(midi_id: int, updated_midi: MidiInput):
     if len(updated_midi.title) == 0 and len(updated_midi.midi_body) == 0:
         raise HTTPException(status_code=400, detail={

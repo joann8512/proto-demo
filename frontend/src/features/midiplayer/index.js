@@ -219,9 +219,9 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
       track.notes.forEach((note, noteIndex) => {
         //preview
 				Tone.Transport.schedule(time => {
-          Tone.Draw.schedule(() => {
+          {/*Tone.Draw.schedule(() => {
             this.context.dispatch('preview_key', note.name, note.duration);
-          }, time);
+          }, time);*/}
 				}, note.time);
 
         //play
@@ -235,9 +235,9 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
             playNoteIndexes,
           });
 
-					Tone.Draw.schedule(() => {
+					{/*Tone.Draw.schedule(() => {
             this.props.dispatch(triggerKey(note.name, note.duration));
-          }, time);
+          }, time);*/}
 				}, note.time + this.timeOffset);
       });
     });

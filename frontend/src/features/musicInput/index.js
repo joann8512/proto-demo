@@ -65,6 +65,7 @@ class MusicInput extends React.Component<MusicInputProps, MusicInputState> {
 	onInputUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const url = e.target.value;
 		const valid = url && validURL(url);
+		console.log('on input')
 		
 		this.setState({
 			...this.state,
@@ -123,7 +124,14 @@ class MusicInput extends React.Component<MusicInputProps, MusicInputState> {
 			midi_body: this.state.midiJson,
 		});
 		const headers={'Content-Type': file.type};
-		const { upload } = await axios.post(`${API_URL}/uploadfile/`, formData, headers);
+		const new_file = await axios.post(`${API_URL}/uploadfile/`, formData, headers);
+		console.log('new_table: ', new_file.data)
+		const update_file = fetch(`/from_back/Honestly_Piano_12.midi`).then(response => {
+			console.log(response.url)
+			this.midi = new Midi();
+			this.midi.loadMidi(response.url).then(this.onLoadMidi);
+		});
+		console.log(update_file instanceof File)
 		
 		this.setState({
 			...this.state,

@@ -1,4 +1,2 @@
-node_modules
-backend/**/__pycache__/**
-backend/__pycache__
-backend/.DS_Store
+**/*.pyc
+**/.DS_Store
