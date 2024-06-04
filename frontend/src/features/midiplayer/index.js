@@ -428,8 +428,6 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
                   onClick={this.clickStepBackwardBtn}>
             {'<<'}
           </button>
-
-          
         </div>
 
         <input className="slider-control"
