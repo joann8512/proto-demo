@@ -2,7 +2,7 @@ import json
 from pydantic import BaseModel
 
 class MidiInput(BaseModel):
-    id: int
+    id: int = ''
     title: str = ''
     midi_body: str = ''
     init: str = ''

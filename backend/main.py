@@ -9,11 +9,10 @@ from fastapi import HTTPException
 
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from fastapi.middleware.cors import CORSMiddleware
-from model import txt_db
 
 from model.database import DBSession
 from model import models
-from model.txt_db import txt_to_database
+from model.desc_db import txt_to_database, database_to_txt
 from schemas import MidiInput
 
 app = FastAPI()
@@ -59,7 +58,7 @@ def get_descriptions(filename: str):
         db.close()
     return {"id": get_midi.id, "desc": get_midi.desc}
 
-@app.post("/")
+@app.post("/drop/")
 ## Adding new midi input to database
 def add_note(midi: MidiInput):
     db = DBSession()
@@ -122,8 +121,11 @@ def update_midi(row_id: int, descIn: MidiInput):
         midi.desc = update
         db.commit()
         db.refresh(midi)
+
+        database_to_txt(midi.desc)
     finally:
         db.close()
+
     return midi
 
 @app.delete("/")

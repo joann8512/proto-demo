@@ -119,10 +119,14 @@ class MusicInput extends React.Component<MusicInputProps, MusicInputState> {
     	formData.append('file', file);
 
 		const API_URL = "http://localhost:8000";
-		const { data } = await axios.post(`${API_URL}/`, {
+		const { data } = await axios.post(`${API_URL}/drop/`, {
 			title: this.state.fileName,
 			midi_body: this.state.midiJson,
-		});
+		}).catch(error => {
+            if (error.response.status === 422) {
+                console.error('Unprocessable Entity: ', error.response.data);
+            }
+        });
 		const headers={'Content-Type': file.type};
 		const new_file = await axios.post(`${API_URL}/uploadfile/`, formData, headers);
 		console.log('new_table: ', new_file.data)
