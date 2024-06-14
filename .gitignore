@@ -1,2 +1,4 @@
 **/*.pyc
 **/.DS_Store
+./backend/**/__pycache__/
+./frontend/node_modules/

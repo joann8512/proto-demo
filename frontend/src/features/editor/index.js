@@ -1,39 +1,116 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Container, Row, Col } from "react-bootstrap";
 import { connect } from 'react-redux';
+import axios from "axios";
 import styles from './style.css';
+import { PlayerUpdateFunctionContext } from "../../App";
+
+
+export const BAR = {
+    0: '(Default)', 1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8'
+};
 
 export const POLYDENSE = {
-    1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8'
+    0: '(Default)', 1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8'
 };
 export const RHYTHM = {
-    1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8'
+    0: '(Default)', 0:'0', 1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8'
 };
 export const INSTR = {
-    piano:'Piano', violin:'Violin', guitar:'Guitar', bass:'Bass', drum:'Drum'
+    default:'(Default)', piano:'Bright Acoustic Piano', violin:'Violin', guitar:'Guitar', bass:'Bass', drum:'Drum'
 };
 export const M_VEL = {
-    1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8'
+    0:'(Default)', 16:'16', 32:'32', 48: '48', 64:'64', 80:'80', 96:'96', 112:'112', 128:'128'
 };
 export const M_DUR = {
-    1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8'
+    0:'(Default)', 16:'16', 32:'32', 48: '48', 64:'64', 80:'80', 96:'96', 112:'112', 128:'128'
 };
 
 type MusicInputState = {
+    bar: int,
     poly: int,
     rhythm: int,
     instr: string,
     m_vel: int,
-    m_dur: int
+    m_dur: int,
+    id: int
 }
 
 class Editor extends React.Component<MusicInputState> {
     state: MusicInputState = {
-        poly: 8,
-        rhythm: 8,
-        instr: '',
-        m_vel: 8,
-        m_dur: 8
+        bar: 0,
+        poly: 0,
+        rhythm: 0,
+        instr: 'default',
+        m_vel: 0,
+        m_dur: 0,
+        save: false,
+        id: 0
+    }
+    
+    handleSubmit = async (event) => {
+        const API_URL = "http://localhost:8000";
+		const result  = await axios.get(`${API_URL}/desc/`, {
+			params: {
+                filename: "4.mid"
+            }
+		}).catch(error => {
+            if (error.response.status === 422) {
+                console.error('Unprocessable Entity: ', error.response.data);
+            }
+        });
+        this.setState({...this.state, id: result.data["id"]});
+        var data = result.data["desc"]
+        console.log('Current Bar: ', data[`Bar_${this.state.bar}`])
+        const bar_data = data[`Bar_${this.state.bar}`]
+        this.setState({
+            ...this.state,
+            instr: bar_data['Instrument'][0],
+            rhythm: bar_data['Rhythm Intensity'][0],
+            m_vel: bar_data['Mean Velocity'][0],
+            m_dur: bar_data['Mean Duration'][0]
+        });
+        console.log('Loaded info bar: ', this.state)
+    }
+
+    handleUpdate = async (event) => {
+        console.log('update: ',this.state.instr)
+        const API_URL = "http://localhost:8000";
+        console.log('bar: ', typeof(this.state.bar))
+		await axios.put(`${API_URL}/update/${this.state.id}`, 
+                {
+                id: this.state.id,
+                title: "4.mid",
+                desc: {bar: this.state.bar,
+                    instr: this.state.instr,
+                    rhythm: this.state.rhythm,
+                    m_vel: this.state.m_vel,
+                    m_dur: this.state.m_dur}}
+        ) //data error: not dict
+		.catch(error => {
+            if (error.response.status === 422) {
+                console.error('Unprocessable Entity: ', error.response.data);
+            }
+        });
+        this.setState({
+            ...this.state,
+            bar: 0,
+            instr: 'default',
+            rhythm: 0,
+            m_vel: 0,
+            m_dur: 0
+        });
+        console.log('Reset: ', this.state)
+    }
+
+    onChangeBar = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const bar = e.target.value;  //bar number selected
+        this.setState({
+            ...this.state,
+            bar: bar,
+        });
+        this.handleSubmit()  //???
+        console.log('onChangeBar: ', this.state)
     }
 
     onChangeInstr = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -42,6 +119,7 @@ class Editor extends React.Component<MusicInputState> {
         ...this.state,
         instr: instr,
         });
+        console.log('onChangeInstr: ', this.state)
     }
 
     onChangePoly = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -50,6 +128,7 @@ class Editor extends React.Component<MusicInputState> {
         ...this.state,
         poly: poly,
         });
+        console.log('onChangePoly: ', this.state)
     }
 
     onChangeRhyt = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,6 +137,7 @@ class Editor extends React.Component<MusicInputState> {
         ...this.state,
         rhythm: rhythm,
         });
+        console.log('onChangeRhyt: ', this.state)
     }
 
     onChangeVel = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,6 +146,7 @@ class Editor extends React.Component<MusicInputState> {
         ...this.state,
         m_vel: m_vel,
         });
+        console.log('onChangeVel: ', this.state)
     }
 
     onChangeDur = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -74,16 +155,34 @@ class Editor extends React.Component<MusicInputState> {
         ...this.state,
         m_dur: m_dur,
         });
+        console.log('onChangeDur: ', this.state)
     }
 
+    
+
     render() {
-        console.log('log')
-        const { open } = this.state;
+        console.log('Editor: ', this.state)
+        //const { open } = this.state;
         return(
+            <PlayerUpdateFunctionContext.Consumer>
+			{(context) => (
             <div className="panel">
                 <div className="editor-container">
                     <div className="pallette-text">
                         <p>Editor Pallette</p>
+                    </div>
+
+                    <div className="dropdown">
+                        <p>Bar: </p>
+                        <select onChange={this.onChangeBar}
+                            className="select-section" 
+                            value={this.state.bar}>
+                            {
+                                Object.keys(BAR).map(key => (
+                                    <option key={key} value={BAR[key]}>{BAR[key]}</option>
+                                ))
+                            }
+                        </select>
                     </div>
 
                     <div className="dropdown">
@@ -154,13 +253,19 @@ class Editor extends React.Component<MusicInputState> {
                         <p>Now... For something new?</p>
                     </div>
                     <div>
+                        <button className="regenerate-btn" type="button" 
+                        onClick={(event) => this.handleUpdate()}>Save</button>
+                    </div>
+                    <div>
                         <button className="regenerate-btn" type="button">ReGenerate</button>
                     </div>
                     <div>
                         <button className="regenerate-btn" type="button">ReInstrument</button>
                     </div>
-                </div>
+                </div>  
             </div>
+            )}
+			</PlayerUpdateFunctionContext.Consumer>
         )
     }
 }

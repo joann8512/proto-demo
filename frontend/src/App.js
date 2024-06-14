@@ -46,13 +46,12 @@ function App() {
       <Preloader load={load} />
         <div className="App" id={load ? "no-scroll" : "scroll"}>
           {/*<EventSystemProvider>*/}
-            <Navbar />
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Home />} />
-            </Routes>
-            {/*<Home />*/}
-            <Footer />
+          <Navbar />
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+          <Footer />
           {/*</EventSystemProvider>*/}
         </div>
       </PlayerUpdateFunctionContext.Provider>

@@ -520,6 +520,9 @@ button:focus {
 }
 
 .btn-primary {
+  width: auto;
+  height:30px;
+  display: flex;
   color: #fff !important;
   background-color: #623686 !important;
   border-color: #623686 !important;

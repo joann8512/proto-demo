@@ -126,7 +126,7 @@ class MusicInput extends React.Component<MusicInputProps, MusicInputState> {
 		const headers={'Content-Type': file.type};
 		const new_file = await axios.post(`${API_URL}/uploadfile/`, formData, headers);
 		console.log('new_table: ', new_file.data)
-		const update_file = fetch(`/from_back/Honestly_Piano_12.midi`).then(response => {
+		const update_file = fetch(`/from_back/Honestly/Honestly_Piano_12.midi`).then(response => {
 			console.log(response.url)
 			this.midi = new Midi();
 			this.midi.loadMidi(response.url).then(this.onLoadMidi);

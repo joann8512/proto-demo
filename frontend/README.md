@@ -10,8 +10,8 @@ To build this project, the following will be used:
 
 ## To Start
 You will need `node.js` and `git` installed globally on your machine.
-    1. Installation: npm install  
-    2. In the project directory, you can run: `npm start`  
+    1. Installation: `yarn create react-app proto-demo` (use yarn to avoid dependency issues)  
+    2. In the project directory, you can run: `yarn start`  
     [link](https://nodejs.org/en/download/package-manager/)
 
 Runs the app in the development mode.  

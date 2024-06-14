@@ -1,19 +1,21 @@
 import uvicorn
 import os
 import subprocess
-import logging
+import json
+import copy
 
 from fastapi import FastAPI, File, UploadFile
 import fastapi.security as Security
 from fastapi import HTTPException
 
-import sqlalchemy.orm as _orm
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from fastapi.middleware.cors import CORSMiddleware
+from model import txt_db
 
 from model.database import DBSession
 from model import models
-from schemas import MidiInput
+from model.txt_db import txt_to_database
+from schemas import MidiInput, DescInput
 
 app = FastAPI()
 
@@ -42,6 +44,15 @@ def read_files():
         db.close()
     return notes
 
+@app.get("/desc/")
+def get_descriptions(filename: str):
+    db = DBSession()
+    try:
+        get_midi = db.query(models.Midi).filter(models.Midi.title == filename).first()
+    finally:
+        db.close()
+    return {"id": get_midi.id, "desc": get_midi.desc}
+
 @app.post("/")
 ## Adding new midi input to database
 def add_note(midi: MidiInput):
@@ -69,30 +80,36 @@ async def create_upload_file(file: UploadFile = File(...)):
     with open(file_location, "wb") as buffer:
         buffer.write(await file.read())
     subprocess.call(['bash','./start.sh'])  # file_location
+    desc_info = txt_to_database()
 
     db = DBSession()
     try:
         midi = db.query(models.Midi).filter(models.Midi.title == file.filename).first()
         fn, ext = os.path.splitext(file.filename)
         midi.init = os.path.join(fn+'_init', ext)
+        midi.desc = desc_info
         db.commit()
         db.refresh(midi)
     finally:
         db.close()
     return midi.init
 
-@app.put("/update/")
-def update_midi(midi_id: int, updated_midi: MidiInput):
-    if len(updated_midi.title) == 0 and len(updated_midi.midi_body) == 0:
+@app.put("/update/{row_id}/", response_model=MidiInput)
+def update_midi(row_id: int, descIn: MidiInput):
+    if descIn.desc['bar'] == 'default':
         raise HTTPException(status_code=400, detail={
             "status": "Error 400 - Bad Request",
             "msg": "The note's `title` and `note_body` can't be both empty"
         })
     db = DBSession()
     try:
-        midi = db.query(models.Midi).filter(models.Midi.id == midi_id).first()
-        midi.title = updated_midi.title
-        midi.midi_body = updated_midi.midi_body
+        midi = db.query(models.Midi).filter(models.Midi.id==row_id).first()
+        update = copy.deepcopy(midi.desc)
+        update['Bar_{}'.format(descIn.desc['bar'])]['Instrument'] = descIn.desc['instr']
+        update['Bar_{}'.format(descIn.desc['bar'])]['Rhythm Intensity'] = descIn.desc['rhythm']
+        update['Bar_{}'.format(descIn.desc['bar'])]['Mean Velocity'] = [descIn.desc['m_vel']]
+        update['Bar_{}'.format(descIn.desc['bar'])]['Mean Duration'] = descIn.desc['m_dur']
+        midi.desc = update
         db.commit()
         db.refresh(midi)
     finally:
