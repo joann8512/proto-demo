@@ -10,12 +10,3 @@ class MidiInput(BaseModel):
 
     class Config:
         orm_mode = True
-
-class DescInput(BaseModel):
-    id: str = ''
-    title: str = ''
-    bar: str = ''
-    instr: str = ''
-    rhythm: str = ''
-    m_vel: str = ''
-    m_dur: str = ''

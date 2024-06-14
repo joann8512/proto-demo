@@ -1,7 +1,6 @@
 import uvicorn
 import os
 import subprocess
-import json
 import copy
 
 from fastapi import FastAPI, File, UploadFile
@@ -15,7 +14,7 @@ from model import txt_db
 from model.database import DBSession
 from model import models
 from model.txt_db import txt_to_database
-from schemas import MidiInput, DescInput
+from schemas import MidiInput
 
 app = FastAPI()
 
@@ -37,15 +36,22 @@ if not os.path.exists(UPLOAD_DIR):
 
 @app.get("/")
 def read_files():
+    '''
+        To query the complete database
+    '''
     db = DBSession()
     try:
-        notes = db.query(models.Midi).all()
+        database = db.query(models.Midi).all()
     finally:
         db.close()
-    return notes
+    return database
 
 @app.get("/desc/")
 def get_descriptions(filename: str):
+    '''
+        To get description data based on arranged midi filename
+        filename: <filename_init.mid>
+    '''
     db = DBSession()
     try:
         get_midi = db.query(models.Midi).filter(models.Midi.title == filename).first()
@@ -75,6 +81,9 @@ def add_note(midi: MidiInput):
     return new_file
 
 @app.post("/uploadfile/")
+## Saving uploaded midi file
+## Triggers python backend: init -> sample_desc
+## Process generated desc to database
 async def create_upload_file(file: UploadFile = File(...)):
     file_location = os.path.join(UPLOAD_DIR, file.filename)
     with open(file_location, "wb") as buffer:
@@ -95,6 +104,7 @@ async def create_upload_file(file: UploadFile = File(...)):
     return midi.init
 
 @app.put("/update/{row_id}/", response_model=MidiInput)
+## Modify descriptions based on user selection
 def update_midi(row_id: int, descIn: MidiInput):
     if descIn.desc['bar'] == 'default':
         raise HTTPException(status_code=400, detail={
@@ -105,10 +115,10 @@ def update_midi(row_id: int, descIn: MidiInput):
     try:
         midi = db.query(models.Midi).filter(models.Midi.id==row_id).first()
         update = copy.deepcopy(midi.desc)
-        update['Bar_{}'.format(descIn.desc['bar'])]['Instrument'] = descIn.desc['instr']
-        update['Bar_{}'.format(descIn.desc['bar'])]['Rhythm Intensity'] = descIn.desc['rhythm']
+        update['Bar_{}'.format(descIn.desc['bar'])]['Instrument'] = [descIn.desc['instr']]
+        update['Bar_{}'.format(descIn.desc['bar'])]['Rhythm Intensity'] = [descIn.desc['rhythm']]
         update['Bar_{}'.format(descIn.desc['bar'])]['Mean Velocity'] = [descIn.desc['m_vel']]
-        update['Bar_{}'.format(descIn.desc['bar'])]['Mean Duration'] = descIn.desc['m_dur']
+        update['Bar_{}'.format(descIn.desc['bar'])]['Mean Duration'] = [descIn.desc['m_dur']]
         midi.desc = update
         db.commit()
         db.refresh(midi)
@@ -117,6 +127,7 @@ def update_midi(row_id: int, descIn: MidiInput):
     return midi
 
 @app.delete("/")
+## Currently not used...
 def delete_midi(midi_id: int):
     db = DBSession()
     try:
