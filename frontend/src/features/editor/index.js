@@ -253,14 +253,14 @@ class Editor extends React.Component<MusicInputState> {
                         <p>Now... For something new?</p>
                     </div>
                     <div>
-                        <button className="regenerate-btn" type="button" 
-                        onClick={(event) => this.handleUpdate()}>Save</button>
+                        <button className="regenerate-btn" 
+                                onClick={(event) => this.handleUpdate()}>Save</button>
                     </div>
                     <div>
-                        <button className="regenerate-btn" type="button">ReGenerate</button>
+                        <button className="regenerate-btn">ReGenerate</button>
                     </div>
                     <div>
-                        <button className="regenerate-btn" type="button">ReInstrument</button>
+                        <button className="regenerate-btn">ReInstrument</button>
                     </div>
                 </div>  
             </div>

@@ -13,9 +13,10 @@ def txt_to_database():
                     'Mean Duration':[],
                     'Instrument':[],
                     'Chord':[]}
-            line = l.split(',')[:-1] # remove last comma
+            line = l.split(', ')[:-1] # remove last comma
             # init format with DATA
             FULL_DATA[line[0]] = DATA
+            print(line[1:])
             for item in line[1:]:
                 FULL_DATA[line[0]][item.split('_')[0]].append(item.split('_')[1]) 
     return FULL_DATA
@@ -33,10 +34,10 @@ def database_to_txt(desc_dict):
         for i in desc_list:
             f.write(i)
 
-#def main():
-#    txt_path = '../frontend/public/from_back/Honestly/description.txt'
-#    txt_to_database(txt_path)
+def main():
+    #txt_path = '../frontend/public/from_back/Honestly/description.txt'
+    txt_to_database()
 #    database_to_txt()
 
-#if __name__ == "__main__":
-#    main()
+if __name__ == "__main__":
+    main()

@@ -191,7 +191,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
 
     console.log("midiplayer: schedule play. track count: ", midi.tracks.length);
 
-    //default to 120, in case of no tempo provided in midi file, which is unusual.
+    //default to 120, in case of no tempo provided in midi file.
     Tone.Transport.bpm.value = 120;
     midi.header.tempos.forEach((tempo, tempoIndex) => {
       if (tempoIndex === 0) {
@@ -305,6 +305,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
     this.props.dispatch(stop());
   }
 
+  // Currently not used!
   clickStepForwardBtn = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (this.playState !== PLAYSTATE.PAUSE && this.playState !== PLAYSTATE.STOP)
       return;
@@ -337,6 +338,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
     Tone.Transport.pause(`+${duration}`); 
   }
 
+  // Currently not used!
   clickStepBackwardBtn = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (this.playState !== PLAYSTATE.PAUSE)
       return;
@@ -373,6 +375,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
     Tone.Transport.pause(`+${endTime - startTime}`); 
   }
 
+  // For play progress
   get progressText() {
     if (!this.state.isMidiReady) {
       return '';
@@ -408,28 +411,6 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
   render() {
     return (
       <div>
-        <div className="control-btn-container">
-          <button disabled={!this.state.isMidiReady}
-                  onClick={this.clickPlayBtn}>
-            {this.playBtnText}
-          </button>
-
-          <button hidden={!this.state.isMidiReady}
-                  onClick={this.clickStopBtn}>
-            Stop
-          </button>
-
-          <button hidden={!(this.state.isMidiReady && this.state.playbackRate === 1)}
-                  onClick={this.clickStepForwardBtn}>
-            {'>>'}
-          </button>
-
-          <button hidden={!(this.state.isMidiReady && this.state.playbackRate === 1)}
-                  onClick={this.clickStepBackwardBtn}>
-            {'<<'}
-          </button>
-        </div>
-
         <input className="slider-control"
                type="range" min="0" max="100"
                value={this.state.playProgress}
@@ -447,7 +428,26 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
                  onChange={this.onChangePlaybackRate} />
           <span>{`BPM:  ${Tone.Transport.bpm.value.toFixed()}`}</span>
         </div>
+        <div className="control-btn-container">
+          <button disabled={!(this.state.isMidiReady && this.state.playbackRate === 1)}
+                  onClick={this.clickStepBackwardBtn}>
+            {'<<'}
+          </button>
+          <button disabled={!this.state.isMidiReady}
+                  onClick={this.clickPlayBtn}>
+            {this.playBtnText}
+          </button>
 
+          <button disabled={!this.state.isMidiReady}
+                  onClick={this.clickStopBtn}>
+            Stop
+          </button>
+
+          <button disabled={!(this.state.isMidiReady && this.state.playbackRate === 1)}
+                  onClick={this.clickStepForwardBtn}>
+            {'>>'}
+          </button>
+        </div>
       </div>
     )
   }

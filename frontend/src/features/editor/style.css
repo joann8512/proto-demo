@@ -26,7 +26,7 @@
 .dropdown{
     margin: 0 15px 0 15px;
     padding-top: 10px;
-    padding-left: 15%;
+    padding-left: 20px;
     color: white;
     font-size: 20px;
     display: flex;
@@ -38,6 +38,8 @@
     width: auto;
     display: flex;
     margin: 0 10px 0 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-align: center;
     border-radius: 15px;
     background-color: #e1adffe0;
@@ -65,10 +67,20 @@
 .regenerate-btn{
     width: 200px;
     height: 70px;
-    margin: 8px 0 8px 0;
+    margin: 8px 0 8px 0 !important;
     border: 1px solid rgba(119, 0, 119, 0.76);
-    border-radius: 8px;
+    border-radius: 8px !important;
     color: white;
     background-color: rgba(165, 3, 165, 0.705);
     font-size: 20px;
+    font-weight: 400;
+}
+
+.regenerate-btn:hover{
+    transition: 0.25s;
+    border: 3px solid #d281d2;
+    background-color: #b735b7;
+    color: rgb(27, 27, 27);
+    font-weight: 500;
+    font-size: 25px;
 }
