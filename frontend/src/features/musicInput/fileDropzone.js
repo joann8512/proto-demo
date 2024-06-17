@@ -45,7 +45,7 @@ const FileDropzone = (props: FileDropzoneProps) => {
         isDragActive ?
           <p style={{color: '#A9A9A9'}}>Drop the file here ...</p> :
           <p style={{color: `${acceptedFileName? 'white' : 'grey'}`}}>
-            {'File load success!  ('+acceptedFileName+')' || "Upload Files"}
+            {"Drag 'n drop your file here! ...or click to upload" || 'File load success!  ('+acceptedFileName+')'}
           </p>
       }
     </div>
