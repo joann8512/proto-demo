@@ -248,7 +248,7 @@ class Editor extends React.Component<MusicInputState> {
                         </select>
                     </div>
                 </div>
-                <div className="regenerate-section">
+                <div className="regenerate-container">
                     <div className="regenerate-text">
                         <p>Now... For something new?</p>
                     </div>

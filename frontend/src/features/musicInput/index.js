@@ -150,7 +150,7 @@ class MusicInput extends React.Component<MusicInputProps, MusicInputState> {
 		return (
 			<PlayerUpdateFunctionContext.Consumer>
 			{(context) => (
-			<div>
+			<div className="drop-container">
 				<form className="url-form">
 					<select className="url-type-select" 
 									value={this.state.inputType}

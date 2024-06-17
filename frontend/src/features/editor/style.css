@@ -6,9 +6,7 @@
 .editor-container{
     width: 50%;
     height: auto;
-    margin-top: 40px;
-    margin-left: 100px;
-    margin-right: 40px;
+    margin: 20px 40px 20px 100px;
     padding: 25px;
     border-color: #a14effd7;
     background-color: #4d4b4be1;
@@ -17,10 +15,11 @@
 }
 
 .pallette-text{
-    margin: 0 15px 0 15px;
+    padding: 5px 15px 5px 15px;
     color: white;
     font-size: 25px;
     font-weight: bold;
+    align-items: center;
 }
 
 .dropdown{
@@ -45,12 +44,11 @@
     background-color: #e1adffe0;
 }
 
-.regenerate-section{
+.regenerate-container{
     position: right;
     width: 50%;
     height: auto;
-    margin-top: 40px;
-    margin-right: 100px;
+    margin: 20px 100px 20px 40px;
     padding: 25px;
     background-color: #4d4b4be1;
     display: flex;

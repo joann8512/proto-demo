@@ -410,7 +410,7 @@ class Midiplayer extends React.Component<MidiplayerProps, MidiPlayerState> {
 
   render() {
     return (
-      <div>
+      <div className="player-container">
         <input className="slider-control"
                type="range" min="0" max="100"
                value={this.state.playProgress}
